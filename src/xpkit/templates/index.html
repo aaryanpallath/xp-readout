@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Experiments</h1>
+<table>
+<tr><th>Experiment</th><th>Decision</th><th>Primary metric change</th><th>Members</th></tr>
+{% for id, r in items.items() %}
+<tr><td><a href="/experiments/{{ id }}">{{ r.name }}</a></td>
+    <td><span class="pill {{ r.decision }}">{{ labels[r.decision] }}</span></td>
+    <td class="n">{{ r.metrics[0].lift|pct }}</td>
+    <td class="n">{{ "{:,}".format(r.srm.n_control + r.srm.n_treatment) }}</td></tr>
+{% endfor %}
+</table>
+<div class="card">
+<h2>Analyze your own experiment</h2>
+<form method="post" action="/experiments" enctype="multipart/form-data">
+ <label>CSV with a <code>variant</code> column (control / treatment) <input type="file" name="file" accept=".csv" required></label>
+ <label>Name <input name="name" required></label>
+ <label>Primary metric column <input name="primary_column" required></label>
+ <label>Pre-period column for CUPED (optional) <input name="pre_column"></label>
+ <label>Guardrail columns, comma separated (optional) <input name="guardrails"></label>
+ <button>Analyze</button>
+</form>
+</div>
+{% endblock %}

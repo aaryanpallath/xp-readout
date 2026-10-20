@@ -1,0 +1,78 @@
+{
+  "aa": {
+    "sims": 2000,
+    "members": 4000,
+    "false_positive_rate_welch": 0.0485,
+    "false_positive_rate_cuped": 0.0495
+  },
+  "power": {
+    "sims": 1000,
+    "members": 20000,
+    "true_lift": 0.02,
+    "power_welch": 0.179,
+    "power_cuped": 0.253,
+    "mean_variance_reduction": 0.2723215935793659,
+    "ci_width_ratio_cuped_vs_welch": 0.8448736310429134,
+    "cuped_ci_coverage": 0.953
+  },
+  "peeking_null": {
+    "sims": 1000,
+    "members": 6000,
+    "true_lift": 0.0,
+    "looks": 14,
+    "tau_fraction_of_mean": 0.1,
+    "reject_rate_naive_daily_peeking": 0.201,
+    "reject_rate_msprt": 0.01,
+    "reject_rate_fixed_horizon_single_look": 0.05,
+    "msprt_median_day_of_decision": 11.0
+  },
+  "peeking_effect": {
+    "sims": 500,
+    "members": 6000,
+    "true_lift": 0.06,
+    "looks": 14,
+    "tau_fraction_of_mean": 0.1,
+    "reject_rate_naive_daily_peeking": 0.612,
+    "reject_rate_msprt": 0.154,
+    "reject_rate_fixed_horizon_single_look": 0.43,
+    "msprt_median_day_of_decision": 10.0
+  },
+  "srm": {
+    "sims": 5000,
+    "members": 100000,
+    "false_alarm_rate_healthy": 0.001,
+    "detection_rate_51_49_split": 0.9988
+  },
+  "msprt_tau_sensitivity": [
+    {
+      "tau_fraction_of_mean": 0.02,
+      "false_positive_rate": 0.0,
+      "power": 0.002,
+      "median_day_of_decision": 14.0
+    },
+    {
+      "tau_fraction_of_mean": 0.05,
+      "false_positive_rate": 0.002,
+      "power": 0.072,
+      "median_day_of_decision": 11.5
+    },
+    {
+      "tau_fraction_of_mean": 0.1,
+      "false_positive_rate": 0.006,
+      "power": 0.122,
+      "median_day_of_decision": 10.0
+    },
+    {
+      "tau_fraction_of_mean": 0.2,
+      "false_positive_rate": 0.008,
+      "power": 0.114,
+      "median_day_of_decision": 8.0
+    },
+    {
+      "tau_fraction_of_mean": 0.5,
+      "false_positive_rate": 0.006,
+      "power": 0.096,
+      "median_day_of_decision": 9.0
+    }
+  ]
+}

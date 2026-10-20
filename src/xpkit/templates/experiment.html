@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ r.name }}{% endblock %}
+{% block content %}
+<h1>{{ r.name }}</h1>
+<div class="banner {{ r.decision }}"><strong>{{ label }}.</strong> {{ r.reasons|join(" ") }}</div>
+
+<div class="card"><h2>Summary</h2><p>{{ r.summary }}</p>
+<p class="muted">Source: {{ r.summary_source }}.
+{% if r.summary_rejections %} An AI-written summary was rejected: {{ r.summary_rejections|join("; ") }}.{% endif %}</p></div>
+
+<div class="card"><h2>Metrics</h2>{{ chart|safe }}
+<table>
+<tr><th>Metric</th><th>Role</th><th>Control</th><th>Treatment</th><th>Change</th><th>95% CI</th><th>p</th><th>Method</th></tr>
+{% for m in r.metrics %}
+<tr><td>{{ m.metric }}</td><td>{{ m.role }}</td><td class="n">{{ m.control_mean|num }}{{ m.unit }}</td>
+<td class="n">{{ m.treatment_mean|num }}{{ m.unit }}</td><td class="n">{{ m.lift|pct(2) }}</td>
+<td class="n">{{ m.lift_ci[0]|pct(2) }} to {{ m.lift_ci[1]|pct(2) }}</td><td class="n">{{ "%.3g"|format(m.p_value) }}</td>
+<td>{{ m.method }}{% if m.variance_reduction %} (−{{ "%.0f"|format(m.variance_reduction * 100) }}% variance){% endif %}</td></tr>
+{% endfor %}
+</table></div>
+
+<div class="card"><h2>Randomization check</h2>
+<p>{{ "{:,}".format(r.srm.n_control) }} control vs {{ "{:,}".format(r.srm.n_treatment) }} treatment
+({{ "%.2f"|format(r.srm.observed_treatment_share * 100) }}% treatment, {{ "%.0f"|format(r.srm.expected_treatment_share * 100) }}% intended);
+p = {{ "%.3g"|format(r.srm.p_value) }}: {% if r.srm.mismatch %}<strong>sample ratio mismatch</strong>{% else %}healthy{% endif %}.</p></div>
+<p class="muted"><a href="/api/experiments/{{ request.path_params.eid }}">JSON</a></p>
+{% endblock %}

@@ -1,0 +1,33 @@
+[project]
+name = "xp-readout"
+version = "0.1.0"
+description = "Trustworthy A/B test readouts: CUPED, SRM checks, sequential testing, and AI summaries validated against the numbers"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "scipy>=1.12", "pandas>=2.2", "fastapi>=0.110", "uvicorn>=0.29", "jinja2>=3.1",
+                "python-multipart>=0.0.9", "matplotlib>=3.8"]
+
+[project.optional-dependencies]
+ai = ["anthropic>=0.40"]
+dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.5"]
+
+[project.scripts]
+xp = "xpkit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/xpkit"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]   # FastAPI's documented File(...) / Form(...) parameter defaults
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
