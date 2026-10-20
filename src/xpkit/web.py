@@ -15,6 +15,7 @@ import pandas as pd  # noqa: E402
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile  # noqa: E402
 from fastapi.responses import HTMLResponse, RedirectResponse  # noqa: E402
 from fastapi.templating import Jinja2Templates  # noqa: E402
+from starlette.middleware.trustedhost import TrustedHostMiddleware  # noqa: E402
 
 from .readout import DECISIONS, MetricSpec, Readout, ai_summary, analyze  # noqa: E402
 from .simulate import experiment  # noqa: E402
@@ -66,6 +67,9 @@ def check_same_origin(request: Request) -> None:
 
 def create_app(demo_members: int = 40000) -> FastAPI:
     app = FastAPI(title="Experiment readouts")
+    # Every request, reads included, must be addressed to a local host name: blocks DNS rebinding, where another
+    # site points its domain at 127.0.0.1 to read this dashboard's data from the viewer's browser.
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=sorted(LOCAL_HOSTS))
     store: dict[int, Readout] = {}
     ids = itertools.count(1)
     primary = MetricSpec("Viewing hours per member", "hours", True, "hours_pre", " h")

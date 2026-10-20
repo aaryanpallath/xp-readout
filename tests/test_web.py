@@ -50,3 +50,9 @@ def test_cross_site_upload_is_refused():
     r = client.post("/experiments", data=form(), files={"file": ("x.csv", io.BytesIO(csv_bytes()), "text/csv")},
                     headers={"origin": "https://evil.example"})
     assert r.status_code == 403
+
+
+def test_requests_for_other_host_names_are_refused():
+    for path in ("/", "/experiments/1", "/api/experiments/1"):
+        assert client.get(path, headers={"host": "attacker.example"}).status_code == 400
+    assert client.get("/api/experiments/1", headers={"host": "127.0.0.1:8000"}).status_code == 200
